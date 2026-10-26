@@ -312,6 +312,197 @@ canvas#beatCanvas { width: 100%; height: 180px; background: var(--canvas-bg); bo
 }
 
 footer { text-align: center; font-size: 12px; color: var(--text-muted); padding: 24px; border-top: 1px solid var(--border); margin-top: 30px; }
+
+/* ==========================================================
+   PRINT STYLESHEET: Clinical Report Only
+   Visible:
+     1. Patient Admission & ECG Upload metadata
+     2. ECG Telemetry (stats + main canvas)
+     3. Focused Beat Analysis (inspector canvas + metrics)
+     4. AI Diagnostic Explanation & Decision Support
+   Hidden:
+     All Demo Records, Sample CSV boxes, tables, buttons & nav
+   ========================================================== */
+@media print {
+  /* Force light theme for paper printing */
+  :root, [data-theme="dark"], body {
+    --bg: #ffffff !important;
+    --card-bg: #ffffff !important;
+    --text: #111827 !important;
+    --text-muted: #4b5563 !important;
+    --border: #d1d5db !important;
+    --light-teal: #f0fdfa !important;
+    --teal: #0b6e8a !important;
+    --canvas-bg: #ffffff !important;
+    --trace-color: #0b6e8a !important;
+    --scan-beam: transparent !important;
+    --scan-glow: transparent !important;
+    background: #ffffff !important;
+    color: #111827 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Hide demo records, upload buttons, interactive controls, and extra tables */
+  .no-print,
+  .preset-bar,
+  .samples-box,
+  .demo-element,
+  .demo-select-group,
+  .hero,
+  .theme-toggle,
+  .scan-toolbar,
+  .click-hint,
+  .upload-btn,
+  input[type="file"],
+  #beatTableCard,
+  #msg,
+  button,
+  .tooltip {
+    display: none !important;
+  }
+
+  /* Show dedicated print metadata */
+  .print-only-source {
+    display: block !important;
+  }
+
+  @page {
+    size: A4 portrait;
+    margin: 12mm 15mm;
+  }
+
+  header {
+    background: transparent !important;
+    color: #12304a !important;
+    border-bottom: 2px solid #0b6e8a !important;
+    padding: 6px 0 !important;
+    box-shadow: none !important;
+    margin-bottom: 12px !important;
+  }
+  header .brand b {
+    color: #12304a !important;
+    font-size: 16pt !important;
+  }
+  header .brand span {
+    color: #64748b !important;
+    font-size: 9pt !important;
+  }
+
+  main {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .card {
+    box-shadow: none !important;
+    border: 1px solid #d1d5db !important;
+    border-radius: 6px !important;
+    padding: 10px 14px !important;
+    margin-bottom: 12px !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .card h3 {
+    color: #0b6e8a !important;
+    border-bottom: 1.5px solid #0b6e8a !important;
+    font-size: 11pt !important;
+    margin-bottom: 8px !important;
+    padding-bottom: 4px !important;
+  }
+
+  /* Patient Admission Info formatted cleanly */
+  .patient-info {
+    margin-bottom: 8px !important;
+    gap: 8px !important;
+  }
+  .input-group label {
+    font-size: 8pt !important;
+    color: #64748b !important;
+  }
+  .input-group input, .input-group select {
+    border: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+    font-size: 9.5pt !important;
+    font-weight: 600 !important;
+    color: #111827 !important;
+  }
+
+  .upload-row {
+    margin-top: 4px !important;
+  }
+
+  /* Telemetry Stats */
+  .stats {
+    gap: 8px !important;
+    margin-bottom: 10px !important;
+  }
+  .stat {
+    border-left: 3px solid #0b6e8a !important;
+    padding: 6px 10px !important;
+    background: #f8fafc !important;
+  }
+  .stat span {
+    font-size: 7.5pt !important;
+  }
+  .stat b {
+    font-size: 15pt !important;
+    margin-top: 2px !important;
+  }
+
+  /* ECG Telemetry Trace */
+  .ecg-container {
+    border: 1px solid #d1d5db !important;
+    background: #ffffff !important;
+  }
+  canvas#c {
+    width: 100% !important;
+    height: 190px !important;
+  }
+
+  /* Focused Beat Analysis */
+  .beat-inspector, #beatInspector {
+    display: block !important;
+    background: #f8fafc !important;
+    border: 1px solid #d1d5db !important;
+    border-radius: 6px !important;
+    padding: 10px 12px !important;
+    margin-top: 10px !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+  #beatInspector h4 {
+    font-size: 10.5pt !important;
+    color: #0b6e8a !important;
+    margin: 0 0 6px 0 !important;
+  }
+  canvas#beatCanvas {
+    width: 100% !important;
+    height: 120px !important;
+    border: 1px solid #e5e7eb !important;
+    background: #ffffff !important;
+  }
+
+  /* AI Explanation */
+  .note {
+    background: #f0fdfa !important;
+    border-left: 3px solid #0b6e8a !important;
+    padding: 8px 12px !important;
+    font-size: 9.5pt !important;
+    line-height: 1.4 !important;
+  }
+
+  footer {
+    border-top: 1px solid #d1d5db !important;
+    padding: 8px 0 !important;
+    margin-top: 10px !important;
+    font-size: 8pt !important;
+    color: #6b7280 !important;
+  }
+}
 </style>
 </head>
 <body>
@@ -324,21 +515,21 @@ footer { text-align: center; font-size: 12px; color: var(--text-muted); padding:
     <b>CardioScan AI</b>
     <span>&middot; Clinical Decision Support & Telemetry</span>
   </div>
-  <div class="header-actions">
+  <div class="header-actions no-print">
     <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">
       <span id="themeIcon">🌙</span> <span id="themeLabel">Dark Telemetry</span>
     </button>
   </div>
 </header>
 
-<div class="hero">
+<div class="hero no-print">
   <h1>Explainable ECG Rhythm Analysis & Telemetry Scan</h1>
   <p>Denoising &rarr; R-Peak CNN &rarr; 9-Class Classifier &rarr; Clinical Feature Rules &rarr; Grad-CAM Saliency</p>
 </div>
 
 <main>
-  <!-- Interactive Quick Demos Bar -->
-  <div class="preset-bar">
+  <!-- Interactive Quick Demos Bar (Hidden in Print) -->
+  <div class="preset-bar no-print demo-element">
     <span>Quick Demo Records:</span>
     <button class="preset-pill active" onclick="loadPreset('100', this)">Record 100 (Normal Sinus)</button>
     <button class="preset-pill" onclick="loadPreset('119', this)">Record 119 (Frequent PVCs)</button>
@@ -347,7 +538,8 @@ footer { text-align: center; font-size: 12px; color: var(--text-muted); padding:
     <button class="preset-pill" onclick="loadPreset('101', this)">Record 101 (Normal)</button>
   </div>
 
-  <div class="card">
+  <!-- 1. Patient Admission & ECG Upload -->
+  <div class="card" id="admissionCard">
     <h3>Patient Admission & ECG Upload</h3>
     <div class="patient-info">
       <div class="input-group"><label>Patient ID</label><input type="text" id="pid" value="PT-84291"></div>
@@ -356,21 +548,22 @@ footer { text-align: center; font-size: 12px; color: var(--text-muted); padding:
       <div class="input-group"><label>Lead</label><input type="text" id="plead" value="Modified Lead II (MLII)" readonly></div>
     </div>
 
-    <div class="row">
+    <div class="row upload-row">
       <div class="input-group" style="flex: 1; min-width: 250px;">
         <label>Custom ECG File (CSV / TXT)</label>
-        <input type="file" id="f" accept=".csv,.txt">
+        <input type="file" id="f" accept=".csv,.txt" class="no-print">
+        <div class="print-only-source" id="printSource" style="display:none; font-size:12px; font-weight:600; color:var(--text); margin-top:4px;">ECG Signal Source: record_100_normal.csv &middot; Sampling: 360 Hz</div>
       </div>
       <div class="input-group" style="width: 120px;">
         <label>Sampling (Hz)</label>
         <input id="fs" type="number" value="360">
       </div>
-      <button onclick="up()" style="margin-top: 18px;">
+      <button class="upload-btn no-print" onclick="up()" style="margin-top: 18px;">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
         Analyze Upload
       </button>
-      <span style="margin-top: 18px; color: var(--text-muted); font-weight:600;">or</span>
-      <div class="input-group" style="width: 130px;">
+      <span class="demo-select-group no-print" style="margin-top: 18px; color: var(--text-muted); font-weight:600;">or</span>
+      <div class="input-group demo-select-group no-print" style="width: 130px;">
         <label>MIT-BIH Record</label>
         <select id="rec">
           <option value="100">100 (Normal)</option>
@@ -380,11 +573,11 @@ footer { text-align: center; font-size: 12px; color: var(--text-muted); padding:
           <option value="214">214 (RBBB)</option>
         </select>
       </div>
-      <button class="alt" onclick="loadFromSelect()" style="margin-top: 18px;">Load Record</button>
+      <button class="alt demo-select-group no-print" onclick="loadFromSelect()" style="margin-top: 18px;">Load Record</button>
     </div>
 
-    <!-- Downloadable & Testable CSVs Section -->
-    <div class="samples-box">
+    <!-- Downloadable & Testable CSVs Section (Hidden in Print) -->
+    <div class="samples-box no-print demo-element">
       <div class="samples-header">
         <span>Ready-to-Test ECG CSV Files (Click to test directly, or download to test file picker):</span>
       </div>
@@ -432,33 +625,34 @@ footer { text-align: center; font-size: 12px; color: var(--text-muted); padding:
       </div>
     </div>
 
-    <div id="msg"></div>
+    <div id="msg" class="no-print"></div>
   </div>
 
   <div id="out" style="display:none">
-    <div class="card stats">
+    <!-- 2. ECG Telemetry Stats -->
+    <div class="card stats" id="statsCard">
       <div class="stat"><span>Heart Rate</span><b id="hr">-</b></div>
       <div class="stat"><span>Beats Detected</span><b id="nb">-</b></div>
       <div class="stat"><span>Abnormal Beats</span><b id="na">-</b></div>
       <div class="stat"><span>Primary Rhythm</span><b id="pr">-</b></div>
-      <div class="stat" style="display: flex; align-items: center; justify-content: center;">
+      <div class="stat no-print" style="display: flex; align-items: center; justify-content: center;">
         <button onclick="window.print()" class="alt" style="width: 100%;">Print Clinical Report</button>
       </div>
     </div>
 
-    <!-- ECG Trace + Interactive Telemetry Sweep -->
-    <div class="card">
+    <!-- 2. ECG Telemetry Trace -->
+    <div class="card" id="telemetryCard">
       <h3>
-        <span>ECG Telemetry Trace &mdash; Live Scan & R-Peaks</span>
-        <span style="font-size: 12px; font-weight: 500; color: var(--text-muted);">Click anywhere on trace to inspect beat</span>
+        <span>ECG Telemetry Trace &mdash; R-Peaks & CNN Attention</span>
+        <span class="click-hint no-print" style="font-size: 12px; font-weight: 500; color: var(--text-muted);">Click anywhere on trace to inspect beat</span>
       </h3>
       
       <div class="ecg-container" id="canvasWrapper">
         <canvas id="c" width="1180" height="280"></canvas>
-        <div class="tooltip" id="tip"></div>
+        <div class="tooltip no-print" id="tip"></div>
       </div>
 
-      <div class="scan-toolbar">
+      <div class="scan-toolbar no-print">
         <div class="scan-controls">
           <button id="scanBtn" class="alt" onclick="toggleScan()" style="padding: 5px 11px; font-size: 12px;">
             <span id="scanIcon">&#9646;&#9646;</span> <span id="scanLabel">Pause Scan</span>
@@ -476,7 +670,7 @@ footer { text-align: center; font-size: 12px; color: var(--text-muted); padding:
         </div>
       </div>
 
-      <!-- Single Beat Inspector -->
+      <!-- 3. Focused Beat Analysis -->
       <div class="beat-inspector" id="beatInspector">
         <h4>Focused Beat Analysis (<span id="inspBeatNum">Beat #1</span> &mdash; <span id="inspClass">Normal</span>)</h4>
         <canvas id="beatCanvas" width="1150" height="180"></canvas>
@@ -490,14 +684,14 @@ footer { text-align: center; font-size: 12px; color: var(--text-muted); padding:
       </div>
     </div>
 
-    <!-- AI Clinical Explanation -->
-    <div class="card">
+    <!-- 4. AI Clinical Explanation -->
+    <div class="card" id="aiCard">
       <h3>AI Diagnostic Explanation & Decision Support</h3>
       <div class="note" id="sum"></div>
     </div>
 
-    <!-- Beat-by-Beat Detailed Table -->
-    <div class="card">
+    <!-- Beat-by-Beat Detailed Table (Hidden in Print) -->
+    <div class="card no-print" id="beatTableCard">
       <h3>Beat-by-Beat Classification & Rule Verification</h3>
       <table>
         <thead>
@@ -533,6 +727,8 @@ let showHeat = true;
 let animId = null;
 let selectedBeatIdx = 0;
 let isDarkTheme = false;
+let isPrinting = false;
+let currentSourceDesc = "record_100_normal.csv";
 
 // Resolve backend endpoint (works whether hosted on localhost, 127.0.0.1, or file://)
 const API_BASE = (window.location.protocol === "http:" || window.location.protocol === "https:") 
@@ -574,6 +770,8 @@ function loadPreset(rec, btn) {
   document.querySelectorAll('.preset-pill').forEach(p => p.classList.remove('active'));
   if (btn) btn.classList.add('active');
   $('rec').value = rec;
+  currentSourceDesc = `MIT-BIH Record ${rec}`;
+  updatePrintSource();
   run(fetch(`${API_BASE}/api/demo/${rec}`));
 }
 
@@ -583,11 +781,15 @@ function loadFromSelect() {
     if (p.textContent.includes(rec)) p.classList.add('active');
     else p.classList.remove('active');
   });
+  currentSourceDesc = `MIT-BIH Record ${rec}`;
+  updatePrintSource();
   run(fetch(`${API_BASE}/api/demo/${rec}`));
 }
 
 async function loadSampleCsv(filename) {
   setMessage("Fetching sample CSV and running analysis...", "info");
+  currentSourceDesc = filename;
+  updatePrintSource();
   try {
     const res = await fetch(`${API_BASE}/sample_ecgs/${filename}`);
     if (!res.ok) throw new Error("Could not load sample file: " + res.statusText);
@@ -607,10 +809,20 @@ async function up() {
     setMessage("Please select a CSV or TXT file first.", "error");
     return;
   }
+  currentSourceDesc = file.name;
+  updatePrintSource();
   const formData = new FormData();
   formData.append("file", file);
   formData.append("fs", $("fs").value || 360);
   run(fetch(`${API_BASE}/api/analyze`, { method: "POST", body: formData }));
+}
+
+function updatePrintSource() {
+  const fsVal = $("fs")?.value || 360;
+  const ps = $('printSource');
+  if (ps) {
+    ps.textContent = `ECG Signal Source: ${currentSourceDesc} · Sampling: ${fsVal} Hz`;
+  }
 }
 
 async function run(promise) {
@@ -655,6 +867,8 @@ function show(d) {
   $("pr").style.color = d.abnormal > 0 ? "var(--red)" : "var(--teal)";
   $("sum").textContent = d.summary;
 
+  updatePrintSource();
+
   // Render Table
   $("tb").innerHTML = d.beats.map((b, i) => {
     const isBad = b.label !== "Normal";
@@ -677,10 +891,17 @@ function show(d) {
 }
 
 function drawECGGrid(ctx, w, h) {
-  const styles = getComputedStyle(document.documentElement);
-  const canvasBg = styles.getPropertyValue('--canvas-bg').trim();
-  const majorColor = styles.getPropertyValue('--grid-major').trim();
-  const minorColor = styles.getPropertyValue('--grid-minor').trim();
+  let canvasBg, majorColor, minorColor;
+  if (isPrinting) {
+    canvasBg = "#ffffff";
+    majorColor = "rgba(220, 80, 80, 0.28)";
+    minorColor = "rgba(235, 130, 130, 0.16)";
+  } else {
+    const styles = getComputedStyle(document.documentElement);
+    canvasBg = styles.getPropertyValue('--canvas-bg').trim();
+    majorColor = styles.getPropertyValue('--grid-major').trim();
+    minorColor = styles.getPropertyValue('--grid-minor').trim();
+  }
 
   ctx.fillStyle = canvasBg;
   ctx.fillRect(0, 0, w, h);
@@ -704,10 +925,12 @@ function drawECGGrid(ctx, w, h) {
 
 function startScanLoop() {
   function loop() {
-    renderMainCanvas();
-    if (scanActive && currentData) {
-      scanX += 2.2 * scanSpeed;
-      if (scanX > $("c").width) scanX = 0;
+    if (!isPrinting) {
+      renderMainCanvas();
+      if (scanActive && currentData) {
+        scanX += 2.2 * scanSpeed;
+        if (scanX > $("c").width) scanX = 0;
+      }
     }
     animId = requestAnimationFrame(loop);
   }
@@ -748,10 +971,15 @@ function renderMainCanvas() {
   }
 
   // Base ECG trace
-  const styles = getComputedStyle(document.documentElement);
-  const traceColor = styles.getPropertyValue('--trace-color').trim();
-  const scanBeam = styles.getPropertyValue('--scan-beam').trim();
-  const scanGlow = styles.getPropertyValue('--scan-glow').trim();
+  let traceColor, scanBeam, scanGlow;
+  if (isPrinting) {
+    traceColor = "#0b6e8a";
+  } else {
+    const styles = getComputedStyle(document.documentElement);
+    traceColor = styles.getPropertyValue('--trace-color').trim();
+    scanBeam = styles.getPropertyValue('--scan-beam').trim();
+    scanGlow = styles.getPropertyValue('--scan-glow').trim();
+  }
 
   ctx.beginPath();
   ctx.strokeStyle = traceColor;
@@ -776,17 +1004,17 @@ function renderMainCanvas() {
     ctx.fill();
 
     if (isSelected) {
-      ctx.strokeStyle = isDarkTheme ? "#ffffff" : "#12304a";
+      ctx.strokeStyle = (isPrinting || !isDarkTheme) ? "#12304a" : "#ffffff";
       ctx.lineWidth = 2;
       ctx.stroke();
-      ctx.fillStyle = isDarkTheme ? "#ffffff" : "#12304a";
+      ctx.fillStyle = (isPrinting || !isDarkTheme) ? "#12304a" : "#ffffff";
       ctx.font = "bold 11px sans-serif";
       ctx.fillText(`Beat #${idx + 1}`, X(b.index) - 18, Y(x[b.index]) - 12);
     }
   });
 
-  // Telemetry Scanline Beam
-  if (scanActive) {
+  // Telemetry Scanline Beam (Only when not printing)
+  if (scanActive && !isPrinting) {
     const grad = ctx.createLinearGradient(scanX - 50, 0, scanX, 0);
     grad.addColorStop(0, "rgba(0, 0, 0, 0)");
     grad.addColorStop(1, scanGlow);
@@ -858,8 +1086,13 @@ function renderBeatCanvas(b) {
   }
 
   // Draw segment waveform
-  const styles = getComputedStyle(document.documentElement);
-  const traceColor = styles.getPropertyValue('--trace-color').trim();
+  let traceColor;
+  if (isPrinting) {
+    traceColor = "#0b6e8a";
+  } else {
+    const styles = getComputedStyle(document.documentElement);
+    traceColor = styles.getPropertyValue('--trace-color').trim();
+  }
 
   ctx.beginPath();
   ctx.strokeStyle = traceColor;
@@ -899,12 +1132,38 @@ function toggleHeatmap() {
   $('heatBtn').textContent = `CNN Attention: ${showHeat ? 'ON' : 'OFF'}`;
 }
 
+// Print Handlers: Redraw canvas for paper print & restore afterwards
+window.addEventListener("beforeprint", () => {
+  isPrinting = true;
+  updatePrintSource();
+  if (currentData) {
+    const beatToInspect = selectedBeatIdx >= 0 ? selectedBeatIdx : 0;
+    if (currentData.beats && currentData.beats[beatToInspect]) {
+      selectBeat(beatToInspect);
+    }
+    renderMainCanvas();
+    if (currentData.beats && currentData.beats[beatToInspect]) {
+      renderBeatCanvas(currentData.beats[beatToInspect]);
+    }
+  }
+});
+
+window.addEventListener("afterprint", () => {
+  isPrinting = false;
+  if (currentData) {
+    renderMainCanvas();
+    if (selectedBeatIdx >= 0 && currentData.beats[selectedBeatIdx]) {
+      renderBeatCanvas(currentData.beats[selectedBeatIdx]);
+    }
+  }
+});
+
 // Canvas Hover & Click Interaction
 const cElem = $("c");
 const tip = $("tip");
 
 cElem.addEventListener("mousemove", e => {
-  if (!currentData) return;
+  if (!currentData || isPrinting) return;
   const rect = cElem.getBoundingClientRect();
   const mouseX = e.clientX - rect.left;
   const ratio = mouseX / rect.width;
@@ -921,7 +1180,7 @@ cElem.addEventListener("mousemove", e => {
 cElem.addEventListener("mouseleave", () => { tip.style.display = "none"; });
 
 cElem.addEventListener("click", e => {
-  if (!currentData || !currentData.beats) return;
+  if (!currentData || !currentData.beats || isPrinting) return;
   const rect = cElem.getBoundingClientRect();
   const clickX = e.clientX - rect.left;
   const targetSample = (clickX / rect.width) * currentData.clean.length;
