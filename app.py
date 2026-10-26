@@ -1,6 +1,7 @@
 """FastAPI backend + static hospital-style UI. Run: uvicorn app:app --reload"""
 import io, os, numpy as np, wfdb
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from scipy.signal import resample
 from ecg.dsp import *
@@ -8,6 +9,13 @@ from ecg.rpeak import detect, FS_T
 from ecg.explain import features, check, agent_summary, grad_cam
 
 app = FastAPI(title="CardioScan AI")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 _model = None
 _rm = None
 
@@ -69,11 +77,64 @@ def analyze(raw, fs):
     return dict(fs=FS, raw=raw.tolist(), clean=x.tolist(), beats=beats, heart_rate=round(float(hr)),
                 abnormal=len(abn), summary=sum_text)
 
+def parse_ecg_csv(content: bytes) -> np.ndarray:
+    text = content.decode("utf-8", errors="ignore")
+    lines = [line.strip() for line in text.splitlines() if line.strip() and not line.strip().startswith("#")]
+    if not lines:
+        raise ValueError("The uploaded CSV file is empty.")
+    
+    start_row = 0
+    first_row_parts = [p.strip().strip('"').strip("'") for p in lines[0].replace(";", ",").replace("\t", ",").split(",") if p.strip()]
+    try:
+        float(first_row_parts[0])
+    except (ValueError, IndexError):
+        start_row = 1  # Header detected, skip first row
+        
+    data_rows = []
+    for line in lines[start_row:]:
+        parts = [p.strip().strip('"').strip("'") for p in line.replace(";", ",").replace("\t", ",").split(",") if p.strip()]
+        vals = []
+        for p in parts:
+            try:
+                vals.append(float(p))
+            except ValueError:
+                pass
+        if vals:
+            data_rows.append(vals)
+            
+    if not data_rows:
+        raise ValueError("No numeric ECG voltage samples found in file.")
+        
+    arr = np.array(data_rows, dtype=float)
+    if arr.ndim == 2:
+        if arr.shape[1] >= 2:
+            col0_diff = np.diff(arr[:, 0])
+            # If col 0 is sequential timestamp/index (0, 1, 2... or 0.00, 0.01...), take col 1
+            if len(col0_diff) > 0 and np.all(col0_diff > 0):
+                return arr[:, 1]
+            return arr[:, -1]
+        return arr[:, 0]
+    return arr
+
 @app.post("/api/analyze")
 async def upload(file: UploadFile = File(...), fs: int = Form(360)):
-    try: raw = np.loadtxt(io.BytesIO(await file.read()), delimiter=",", usecols=0, skiprows=0, ndmin=1)
-    except Exception: raise HTTPException(422, "Upload a CSV with one ECG sample per row.")
+    try:
+        content = await file.read()
+        raw = parse_ecg_csv(content)
+    except Exception as e:
+        raise HTTPException(422, f"CSV parsing error: {str(e)}")
+    if len(raw) < 100:
+        raise HTTPException(422, "ECG signal is too short. Please provide at least 100 samples.")
     return analyze(raw.astype(float), fs)
+
+@app.get("/api/samples")
+def list_samples():
+    return [
+        {"id": "100", "filename": "record_100_normal.csv", "name": "Record 100 (Normal Sinus)", "label": "Normal Rhythm", "fs": 360},
+        {"id": "119", "filename": "record_119_pvc_arrhythmia.csv", "name": "Record 119 (PVC Arrhythmia)", "label": "Premature Ventricular Contractions", "fs": 360},
+        {"id": "214", "filename": "record_214_rbbb.csv", "name": "Record 214 (RBBB)", "label": "Right Bundle Branch Block", "fs": 360},
+        {"id": "106", "filename": "record_106_bigeminy.csv", "name": "Record 106 (Bigeminy)", "label": "Ventricular Bigeminy", "fs": 360},
+    ]
 
 @app.get("/api/demo/{record}")
 def demo(record: int = 100):
@@ -83,5 +144,8 @@ def demo(record: int = 100):
     else:
         rec = wfdb.rdrecord(str(record), pn_dir="mitdb", sampto=3600 * 2, channels=[0])
     return analyze(rec.p_signal[:, 0], FS)
+
+if os.path.exists("sample_ecgs"):
+    app.mount("/sample_ecgs", StaticFiles(directory="sample_ecgs"), name="sample_ecgs")
 
 app.mount("/", StaticFiles(directory="static", html=True), name="static")

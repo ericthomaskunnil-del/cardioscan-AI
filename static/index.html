@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -10,125 +10,231 @@
   --navy: #12304a;
   --bg: #f4f8fb;
   --card-bg: #ffffff;
+  --text: #1c2b39;
+  --text-muted: #64748b;
   --red: #c62f45;
   --ok: #1f8f5f;
   --light-teal: #eef6fa;
-  --ecg-grid: #fce8e6;
-  --ecg-subgrid: #fef5f4;
-  --ecg-trace: #0b6e8a;
   --border: #e1e8ed;
+  --input-bg: #ffffff;
+  --grid-major: rgba(220, 80, 80, 0.28);
+  --grid-minor: rgba(235, 130, 130, 0.16);
+  --canvas-bg: #ffffff;
+  --trace-color: rgba(11, 110, 138, 0.95);
+  --scan-beam: rgba(11, 110, 138, 0.9);
+  --scan-glow: rgba(11, 110, 138, 0.25);
 }
+
+[data-theme="dark"] {
+  --teal: #0ea5e9;
+  --navy: #070d14;
+  --bg: #090e17;
+  --card-bg: #101924;
+  --text: #e2e8f0;
+  --text-muted: #94a3b8;
+  --red: #f87171;
+  --ok: #34d399;
+  --light-teal: #132433;
+  --border: #1e2c3d;
+  --input-bg: #0b131e;
+  --grid-major: rgba(30, 58, 82, 0.45);
+  --grid-minor: rgba(18, 38, 56, 0.35);
+  --canvas-bg: #060b11;
+  --trace-color: #00ffc4;
+  --scan-beam: #00ffc4;
+  --scan-glow: rgba(0, 255, 196, 0.22);
+}
+
 * { box-sizing: border-box; }
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   background: var(--bg);
-  color: #1c2b39;
+  color: var(--text);
+  transition: background 0.2s, color 0.2s;
 }
+
 header {
   background: var(--navy);
   color: #fff;
-  padding: 16px 40px;
+  padding: 14px 36px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
 }
 header .brand { display: flex; align-items: center; gap: 10px; }
-header b { font-size: 22px; font-weight: 600; letter-spacing: 0.5px; }
-header span { opacity: .85; font-size: 14px; font-weight: 500; }
+header b { font-size: 21px; font-weight: 600; letter-spacing: 0.5px; }
+header span { opacity: .85; font-size: 13px; font-weight: 500; }
+.header-actions { display: flex; align-items: center; gap: 12px; }
+
+.theme-toggle {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 6px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+.theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
 .hero {
   background: linear-gradient(135deg, var(--navy), var(--teal));
   color: #fff;
-  padding: 28px 40px;
+  padding: 24px 36px;
   margin-bottom: 24px;
 }
-.hero h1 { margin: 0 0 8px; font-size: 26px; font-weight: 600; }
-.hero p { margin: 0; font-size: 15px; opacity: 0.9; }
-main { max-width: 1240px; margin: 0 auto; padding: 0 24px 40px; }
+.hero h1 { margin: 0 0 6px; font-size: 25px; font-weight: 600; }
+.hero p { margin: 0; font-size: 14px; opacity: 0.9; }
+
+main { max-width: 1240px; margin: 0 auto; padding: 0 20px 40px; }
+
 .card {
   background: var(--card-bg);
   border-radius: 12px;
-  padding: 24px;
-  margin-bottom: 24px;
+  padding: 22px;
+  margin-bottom: 22px;
   box-shadow: 0 4px 6px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.08);
   border: 1px solid var(--border);
+  transition: background 0.2s, border-color 0.2s;
 }
 .card h3 {
   margin-top: 0;
   margin-bottom: 18px;
-  font-size: 18px;
-  color: var(--navy);
+  font-size: 17px;
+  color: var(--teal);
   border-bottom: 2px solid var(--light-teal);
   padding-bottom: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.row { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+
+.row { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+
 button {
   background: var(--teal);
   color: #fff;
   border: 0;
-  padding: 10px 18px;
+  padding: 9px 16px;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   transition: all 0.2s;
   display: inline-flex;
   align-items: center;
   gap: 6px;
 }
-button:hover { background: #095a70; }
-button.alt { background: #fff; color: var(--teal); border: 2px solid var(--teal); }
-button.alt:hover { background: var(--light-teal); }
-button.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+button:hover { opacity: 0.9; }
+button.alt {
+  background: transparent;
+  color: var(--teal);
+  border: 1.5px solid var(--teal);
+}
+button.alt:hover {
+  background: var(--light-teal);
+}
+
 .preset-bar {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
   align-items: center;
   padding: 12px 16px;
-  background: #f8fafc;
+  background: var(--card-bg);
   border-radius: 8px;
   border: 1px solid var(--border);
   margin-bottom: 20px;
 }
-.preset-bar span { font-size: 12px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
+.preset-bar span { font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
 .preset-pill {
-  background: #fff;
-  color: var(--navy);
-  border: 1px solid #cbd5e1;
-  padding: 6px 14px;
+  background: var(--card-bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 6px 12px;
   border-radius: 20px;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.15s;
 }
 .preset-pill:hover { border-color: var(--teal); color: var(--teal); background: var(--light-teal); }
 .preset-pill.active { background: var(--teal); color: #fff; border-color: var(--teal); }
-.patient-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 20px; }
+
+.samples-box {
+  background: var(--light-teal);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px;
+  margin-top: 18px;
+}
+.samples-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--teal);
+}
+.samples-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 10px;
+}
+.sample-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+}
+.sample-card b { color: var(--text); }
+.sample-card span { color: var(--text-muted); display: block; font-size: 11px; margin-top: 2px; }
+.sample-actions { display: flex; gap: 6px; }
+.btn-sm { padding: 4px 8px; font-size: 11px; border-radius: 4px; }
+
+.patient-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 18px; }
 .input-group { display: flex; flex-direction: column; gap: 6px; }
-.input-group label { font-size: 12px; font-weight: 600; color: #556; text-transform: uppercase; letter-spacing: 0.5px; }
-.input-group input, .input-group select { padding: 9px 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; }
-.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+.input-group label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+.input-group input, .input-group select {
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 13px;
+  background: var(--input-bg);
+  color: var(--text);
+}
+
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; }
 .stat {
   background: var(--bg);
-  border-left: 5px solid var(--teal);
-  padding: 16px;
+  border-left: 4px solid var(--teal);
+  padding: 14px;
   border-radius: 8px;
-  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.04);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.03);
 }
-.stat span { font-size: 12px; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; }
-.stat b { font-size: 26px; display: block; margin-top: 6px; color: var(--navy); }
+.stat span { font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; }
+.stat b { font-size: 24px; display: block; margin-top: 5px; color: var(--text); }
+
 .ecg-container {
   position: relative;
   border-radius: 8px;
   overflow: hidden;
-  border: 1px solid #cbd5e1;
-  background: #fff;
+  border: 1px solid var(--border);
+  background: var(--canvas-bg);
 }
 canvas#c {
   width: 100%;
@@ -136,53 +242,76 @@ canvas#c {
   display: block;
   cursor: crosshair;
 }
+
 .scan-toolbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px 14px;
-  background: #f8fafc;
+  background: var(--card-bg);
   border-top: 1px solid var(--border);
-  font-size: 13px;
+  font-size: 12px;
   flex-wrap: wrap;
   gap: 10px;
 }
 .scan-controls { display: flex; align-items: center; gap: 8px; }
-.saliency-legend { display: flex; align-items: center; gap: 10px; font-size: 12px; color: #556; flex-wrap: wrap; }
-.saliency-gradient { width: 100px; height: 10px; background: linear-gradient(90deg, #3b82f6, #eab308, #ef4444); border-radius: 5px; }
+.saliency-legend { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-muted); flex-wrap: wrap; }
+.saliency-gradient { width: 90px; height: 9px; background: linear-gradient(90deg, #3b82f6, #eab308, #ef4444); border-radius: 4px; }
+
 table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 13px; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
-th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); }
-th { background: #f8fafc; font-weight: 600; color: var(--navy); }
+th, td { padding: 9px 12px; text-align: left; border-bottom: 1px solid var(--border); color: var(--text); }
+th { background: var(--bg); font-weight: 600; color: var(--teal); }
 tr.beat-row { cursor: pointer; transition: background 0.1s; }
-tr.beat-row:hover { background: #f1f5f9; }
-tr.beat-row.selected { background: #e2e8f0; font-weight: 600; }
+tr.beat-row:hover { background: var(--light-teal); }
+tr.beat-row.selected { background: var(--light-teal); font-weight: 600; outline: 1px solid var(--teal); }
 tr:last-child td { border-bottom: none; }
 .bad { color: var(--red); font-weight: 700; }
 .good { color: var(--ok); font-weight: 700; }
-.note { background: var(--light-teal); border-left: 5px solid var(--teal); padding: 16px; border-radius: 8px; font-size: 14px; line-height: 1.6; color: var(--navy); }
+.note { background: var(--light-teal); border-left: 4px solid var(--teal); padding: 14px; border-radius: 8px; font-size: 14px; line-height: 1.6; color: var(--text); }
+
 .beat-inspector {
   display: none;
-  background: #f8fafc;
-  border: 1px solid #cbd5e1;
+  background: var(--bg);
+  border: 1px solid var(--border);
   border-radius: 8px;
   padding: 16px;
   margin-top: 16px;
 }
-.beat-inspector h4 { margin: 0 0 10px; font-size: 15px; color: var(--navy); }
-canvas#beatCanvas { width: 100%; height: 180px; background: #fff; border: 1px solid #e2e8f0; border-radius: 6px; }
+.beat-inspector h4 { margin: 0 0 10px; font-size: 14px; color: var(--teal); }
+canvas#beatCanvas { width: 100%; height: 180px; background: var(--canvas-bg); border: 1px solid var(--border); border-radius: 6px; }
+
 .tooltip {
   position: absolute;
   pointer-events: none;
-  background: rgba(18, 48, 74, 0.92);
+  background: rgba(10, 20, 30, 0.94);
   color: #fff;
-  padding: 6px 10px;
+  padding: 5px 9px;
   border-radius: 4px;
   font-size: 11px;
   display: none;
   z-index: 10;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.25);
 }
-footer { text-align: center; font-size: 13px; color: #64748b; padding: 28px; border-top: 1px solid var(--border); margin-top: 30px; }
+
+.alert-box {
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.5;
+  margin-top: 14px;
+}
+.alert-error {
+  background: rgba(198, 47, 69, 0.12);
+  border: 1px solid rgba(198, 47, 69, 0.35);
+  color: var(--red);
+}
+.alert-info {
+  background: var(--light-teal);
+  border: 1px solid var(--border);
+  color: var(--teal);
+}
+
+footer { text-align: center; font-size: 12px; color: var(--text-muted); padding: 24px; border-top: 1px solid var(--border); margin-top: 30px; }
 </style>
 </head>
 <body>
@@ -193,8 +322,13 @@ footer { text-align: center; font-size: 13px; color: #64748b; padding: 28px; bor
       <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
     </svg>
     <b>CardioScan AI</b>
+    <span>&middot; Clinical Decision Support & Telemetry</span>
   </div>
-  <span>Department of Cardiology &middot; Clinical Decision Support & Telemetry</span>
+  <div class="header-actions">
+    <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">
+      <span id="themeIcon">🌙</span> <span id="themeLabel">Dark Telemetry</span>
+    </button>
+  </div>
 </header>
 
 <div class="hero">
@@ -205,12 +339,12 @@ footer { text-align: center; font-size: 13px; color: #64748b; padding: 28px; bor
 <main>
   <!-- Interactive Quick Demos Bar -->
   <div class="preset-bar">
-    <span>Live Demo Presets:</span>
-    <button class="preset-pill active" onclick="loadPreset(100, this)">Record 100 (Normal Sinus)</button>
-    <button class="preset-pill" onclick="loadPreset(119, this)">Record 119 (Frequent PVCs)</button>
-    <button class="preset-pill" onclick="loadPreset(214, this)">Record 214 (Right Bundle Branch Block)</button>
-    <button class="preset-pill" onclick="loadPreset(106, this)">Record 106 (Ventricular Bigeminy)</button>
-    <button class="preset-pill" onclick="loadPreset(101, this)">Record 101 (Normal Rhythm)</button>
+    <span>Quick Demo Records:</span>
+    <button class="preset-pill active" onclick="loadPreset('100', this)">Record 100 (Normal Sinus)</button>
+    <button class="preset-pill" onclick="loadPreset('119', this)">Record 119 (Frequent PVCs)</button>
+    <button class="preset-pill" onclick="loadPreset('214', this)">Record 214 (RBBB)</button>
+    <button class="preset-pill" onclick="loadPreset('106', this)">Record 106 (Ventricular Bigeminy)</button>
+    <button class="preset-pill" onclick="loadPreset('101', this)">Record 101 (Normal)</button>
   </div>
 
   <div class="card">
@@ -224,31 +358,81 @@ footer { text-align: center; font-size: 13px; color: #64748b; padding: 28px; bor
 
     <div class="row">
       <div class="input-group" style="flex: 1; min-width: 250px;">
-        <label>Custom ECG File (CSV)</label>
+        <label>Custom ECG File (CSV / TXT)</label>
         <input type="file" id="f" accept=".csv,.txt">
       </div>
-      <div class="input-group" style="width: 130px;">
+      <div class="input-group" style="width: 120px;">
         <label>Sampling (Hz)</label>
         <input id="fs" type="number" value="360">
       </div>
       <button onclick="up()" style="margin-top: 18px;">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
         Analyze Upload
       </button>
-      <span style="margin-top: 18px; color: #94a3b8; font-weight:600;">or</span>
+      <span style="margin-top: 18px; color: var(--text-muted); font-weight:600;">or</span>
       <div class="input-group" style="width: 130px;">
         <label>MIT-BIH Record</label>
         <select id="rec">
           <option value="100">100 (Normal)</option>
           <option value="101">101 (Normal)</option>
-          <option value="106">106 (PVC / Bigeminy)</option>
+          <option value="106">106 (Bigeminy)</option>
           <option value="119">119 (Frequent PVC)</option>
           <option value="214">214 (RBBB)</option>
         </select>
       </div>
       <button class="alt" onclick="loadFromSelect()" style="margin-top: 18px;">Load Record</button>
     </div>
-    <div id="msg" style="margin-top: 14px; font-weight: 600; color: var(--teal);"></div>
+
+    <!-- Downloadable & Testable CSVs Section -->
+    <div class="samples-box">
+      <div class="samples-header">
+        <span>Ready-to-Test ECG CSV Files (Click to test directly, or download to test file picker):</span>
+      </div>
+      <div class="samples-grid">
+        <div class="sample-card">
+          <div>
+            <b>record_100_normal.csv</b>
+            <span>Normal Sinus Rhythm &middot; 360 Hz</span>
+          </div>
+          <div class="sample-actions">
+            <button class="btn-sm" onclick="loadSampleCsv('record_100_normal.csv')">Test Now</button>
+            <a href="/sample_ecgs/record_100_normal.csv" download class="btn-sm" style="background:transparent; color:var(--teal); text-decoration:none; padding:4px 8px; border:1px solid var(--teal); border-radius:4px; font-weight:600;">Download</a>
+          </div>
+        </div>
+        <div class="sample-card">
+          <div>
+            <b>record_119_pvc_arrhythmia.csv</b>
+            <span>Ventricular Arrhythmia (PVCs) &middot; 360 Hz</span>
+          </div>
+          <div class="sample-actions">
+            <button class="btn-sm" onclick="loadSampleCsv('record_119_pvc_arrhythmia.csv')">Test Now</button>
+            <a href="/sample_ecgs/record_119_pvc_arrhythmia.csv" download class="btn-sm" style="background:transparent; color:var(--teal); text-decoration:none; padding:4px 8px; border:1px solid var(--teal); border-radius:4px; font-weight:600;">Download</a>
+          </div>
+        </div>
+        <div class="sample-card">
+          <div>
+            <b>record_214_rbbb.csv</b>
+            <span>Right Bundle Branch Block &middot; 360 Hz</span>
+          </div>
+          <div class="sample-actions">
+            <button class="btn-sm" onclick="loadSampleCsv('record_214_rbbb.csv')">Test Now</button>
+            <a href="/sample_ecgs/record_214_rbbb.csv" download class="btn-sm" style="background:transparent; color:var(--teal); text-decoration:none; padding:4px 8px; border:1px solid var(--teal); border-radius:4px; font-weight:600;">Download</a>
+          </div>
+        </div>
+        <div class="sample-card">
+          <div>
+            <b>record_106_bigeminy.csv</b>
+            <span>Ventricular Bigeminy &middot; 360 Hz</span>
+          </div>
+          <div class="sample-actions">
+            <button class="btn-sm" onclick="loadSampleCsv('record_106_bigeminy.csv')">Test Now</button>
+            <a href="/sample_ecgs/record_106_bigeminy.csv" download class="btn-sm" style="background:transparent; color:var(--teal); text-decoration:none; padding:4px 8px; border:1px solid var(--teal); border-radius:4px; font-weight:600;">Download</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="msg"></div>
   </div>
 
   <div id="out" style="display:none">
@@ -266,7 +450,7 @@ footer { text-align: center; font-size: 13px; color: #64748b; padding: 28px; bor
     <div class="card">
       <h3>
         <span>ECG Telemetry Trace &mdash; Live Scan & R-Peaks</span>
-        <span style="font-size: 13px; font-weight: 500; color: #64748b;">Click trace to inspect beat</span>
+        <span style="font-size: 12px; font-weight: 500; color: var(--text-muted);">Click anywhere on trace to inspect beat</span>
       </h3>
       
       <div class="ecg-container" id="canvasWrapper">
@@ -276,11 +460,11 @@ footer { text-align: center; font-size: 13px; color: #64748b; padding: 28px; bor
 
       <div class="scan-toolbar">
         <div class="scan-controls">
-          <button id="scanBtn" class="alt" onclick="toggleScan()" style="padding: 6px 12px; font-size: 13px;">
+          <button id="scanBtn" class="alt" onclick="toggleScan()" style="padding: 5px 11px; font-size: 12px;">
             <span id="scanIcon">&#9646;&#9646;</span> <span id="scanLabel">Pause Scan</span>
           </button>
-          <button class="alt" onclick="toggleSpeed()" id="speedBtn" style="padding: 6px 12px; font-size: 13px;">Speed: 1x</button>
-          <button class="alt" onclick="toggleHeatmap()" id="heatBtn" style="padding: 6px 12px; font-size: 13px;">CNN Attention: ON</button>
+          <button class="alt" onclick="toggleSpeed()" id="speedBtn" style="padding: 5px 11px; font-size: 12px;">Speed: 1x</button>
+          <button class="alt" onclick="toggleHeatmap()" id="heatBtn" style="padding: 5px 11px; font-size: 12px;">CNN Attention: ON</button>
         </div>
         <div class="saliency-legend">
           <span>Grad-CAM:</span>
@@ -348,12 +532,49 @@ let scanSpeed = 1.0;
 let showHeat = true;
 let animId = null;
 let selectedBeatIdx = 0;
+let isDarkTheme = false;
+
+// Resolve backend endpoint (works whether hosted on localhost, 127.0.0.1, or file://)
+const API_BASE = (window.location.protocol === "http:" || window.location.protocol === "https:") 
+  ? window.location.origin 
+  : "http://127.0.0.1:8000";
+
+// Theme Switcher
+function toggleTheme() {
+  isDarkTheme = !isDarkTheme;
+  document.documentElement.setAttribute("data-theme", isDarkTheme ? "dark" : "light");
+  localStorage.setItem("cardioscan_theme", isDarkTheme ? "dark" : "light");
+  updateThemeButton();
+  if (currentData) {
+    renderMainCanvas();
+    if (selectedBeatIdx >= 0 && currentData.beats[selectedBeatIdx]) {
+      renderBeatCanvas(currentData.beats[selectedBeatIdx]);
+    }
+  }
+}
+
+function updateThemeButton() {
+  $('themeIcon').textContent = isDarkTheme ? "☀️" : "🌙";
+  $('themeLabel').textContent = isDarkTheme ? "Light Hospital" : "Dark Telemetry";
+}
+
+function initTheme() {
+  const saved = localStorage.getItem("cardioscan_theme");
+  if (saved === "dark") {
+    isDarkTheme = true;
+    document.documentElement.setAttribute("data-theme", "dark");
+  } else {
+    isDarkTheme = false;
+    document.documentElement.setAttribute("data-theme", "light");
+  }
+  updateThemeButton();
+}
 
 function loadPreset(rec, btn) {
   document.querySelectorAll('.preset-pill').forEach(p => p.classList.remove('active'));
   if (btn) btn.classList.add('active');
   $('rec').value = rec;
-  run(fetch("/api/demo/" + rec));
+  run(fetch(`${API_BASE}/api/demo/${rec}`));
 }
 
 function loadFromSelect() {
@@ -362,29 +583,63 @@ function loadFromSelect() {
     if (p.textContent.includes(rec)) p.classList.add('active');
     else p.classList.remove('active');
   });
-  run(fetch("/api/demo/" + rec));
+  run(fetch(`${API_BASE}/api/demo/${rec}`));
+}
+
+async function loadSampleCsv(filename) {
+  setMessage("Fetching sample CSV and running analysis...", "info");
+  try {
+    const res = await fetch(`${API_BASE}/sample_ecgs/${filename}`);
+    if (!res.ok) throw new Error("Could not load sample file: " + res.statusText);
+    const blob = await res.blob();
+    const formData = new FormData();
+    formData.append("file", blob, filename);
+    formData.append("fs", $("fs").value || 360);
+    run(fetch(`${API_BASE}/api/analyze`, { method: "POST", body: formData }));
+  } catch (err) {
+    showError(err);
+  }
 }
 
 async function up() {
   const file = $("f").files[0];
-  if (!file) return $("msg").textContent = "Please select a valid CSV file first.";
+  if (!file) {
+    setMessage("Please select a CSV or TXT file first.", "error");
+    return;
+  }
   const formData = new FormData();
   formData.append("file", file);
-  formData.append("fs", $("fs").value);
-  run(fetch("/api/analyze", { method: "POST", body: formData }));
+  formData.append("fs", $("fs").value || 360);
+  run(fetch(`${API_BASE}/api/analyze`, { method: "POST", body: formData }));
 }
 
 async function run(promise) {
-  $("msg").textContent = "Running signal denoising, R-peak detection & CNN classification...";
+  setMessage("Analyzing ECG signal (denoising &rarr; R-peak CNN &rarr; 9-class classifier &rarr; Grad-CAM)...", "info");
   try {
     const res = await promise;
     const data = await res.json();
     if (!res.ok) throw new Error(data.detail || "Error analyzing signal");
-    $("msg").textContent = "";
+    $("msg").innerHTML = "";
     currentData = data;
     show(data);
   } catch (err) {
-    $("msg").textContent = "Error: " + err.message;
+    showError(err);
+  }
+}
+
+function setMessage(html, type) {
+  const m = $("msg");
+  if (!html) { m.innerHTML = ""; return; }
+  m.innerHTML = `<div class="alert-box ${type === 'error' ? 'alert-error' : 'alert-info'}">${html}</div>`;
+}
+
+function showError(err) {
+  if (err.message.includes("Failed to fetch") || err.message.includes("NetworkError")) {
+    setMessage(`<b>Connection Error:</b> Cannot connect to backend server at <code>${API_BASE}</code>.<br>` +
+               `Please ensure the backend is running in your terminal:<br>` +
+               `<code style="background:rgba(0,0,0,0.1); padding:2px 6px; border-radius:4px;">source venv311/bin/activate && uvicorn app:app --host 127.0.0.1 --port 8000 --reload</code>`, "error");
+  } else {
+    setMessage(`<b>Error:</b> ${err.message}`, "error");
   }
 }
 
@@ -397,7 +652,7 @@ function show(d) {
 
   const rhythm = d.abnormal === 0 ? "Normal Sinus Rhythm" : (d.beats.find(b => b.label !== 'Normal')?.label || "Arrhythmia");
   $("pr").textContent = rhythm;
-  $("pr").style.color = d.abnormal > 0 ? "var(--red)" : "var(--navy)";
+  $("pr").style.color = d.abnormal > 0 ? "var(--red)" : "var(--teal)";
   $("sum").textContent = d.summary;
 
   // Render Table
@@ -412,7 +667,7 @@ function show(d) {
       <td>${b.features.premature ? '<span class="bad">Yes</span>' : 'No'}</td>
       <td>${b.features.compensatory_pause ? '<span class="bad">Yes</span>' : 'No'}</td>
       <td>${b.supports.join(", ") || "—"}</td>
-      <td><button class="alt" style="padding:3px 8px; font-size:11px;" onclick="event.stopPropagation(); selectBeat(${i})">Inspect</button></td>
+      <td><button class="alt" style="padding:2px 7px; font-size:11px;" onclick="event.stopPropagation(); selectBeat(${i})">Inspect</button></td>
     </tr>`;
   }).join("");
 
@@ -422,12 +677,17 @@ function show(d) {
 }
 
 function drawECGGrid(ctx, w, h) {
-  ctx.fillStyle = "#ffffff";
+  const styles = getComputedStyle(document.documentElement);
+  const canvasBg = styles.getPropertyValue('--canvas-bg').trim();
+  const majorColor = styles.getPropertyValue('--grid-major').trim();
+  const minorColor = styles.getPropertyValue('--grid-minor').trim();
+
+  ctx.fillStyle = canvasBg;
   ctx.fillRect(0, 0, w, h);
 
   // 1mm minor grid
   ctx.lineWidth = 0.5;
-  ctx.strokeStyle = "rgba(235, 130, 130, 0.18)";
+  ctx.strokeStyle = minorColor;
   ctx.beginPath();
   for (let x = 0; x < w; x += 10) { ctx.moveTo(x, 0); ctx.lineTo(x, h); }
   for (let y = 0; y < h; y += 10) { ctx.moveTo(0, y); ctx.lineTo(w, y); }
@@ -435,7 +695,7 @@ function drawECGGrid(ctx, w, h) {
 
   // 5mm major grid
   ctx.lineWidth = 1;
-  ctx.strokeStyle = "rgba(220, 80, 80, 0.28)";
+  ctx.strokeStyle = majorColor;
   ctx.beginPath();
   for (let x = 0; x < w; x += 50) { ctx.moveTo(x, 0); ctx.lineTo(x, h); }
   for (let y = 0; y < h; y += 50) { ctx.moveTo(0, y); ctx.lineTo(w, y); }
@@ -462,7 +722,7 @@ function renderMainCanvas() {
   const x = currentData.clean;
   const minVal = Math.min(...x), maxVal = Math.max(...x);
   const X = i => (i / x.length) * w;
-  const Y = v => h - 25 - ((v - minVal) / (maxVal - minVal)) * (h - 50);
+  const Y = v => h - 25 - ((v - minVal) / (maxVal - minVal + 1e-6)) * (h - 50);
 
   drawECGGrid(ctx, w, h);
 
@@ -475,9 +735,9 @@ function renderMainCanvas() {
         const idx = start + k;
         if (idx >= x.length - 1) break;
         const sal = b.saliency[k];
-        if (sal > 0.25) {
+        if (sal > 0.22) {
           ctx.beginPath();
-          ctx.strokeStyle = `rgba(239, 68, 68, ${Math.min(sal * 0.9, 0.85)})`;
+          ctx.strokeStyle = `rgba(239, 68, 68, ${Math.min(sal * 0.95, 0.9)})`;
           ctx.lineWidth = 3.5;
           ctx.moveTo(X(idx), Y(x[idx]));
           ctx.lineTo(X(idx + 1), Y(x[idx + 1]));
@@ -488,9 +748,14 @@ function renderMainCanvas() {
   }
 
   // Base ECG trace
+  const styles = getComputedStyle(document.documentElement);
+  const traceColor = styles.getPropertyValue('--trace-color').trim();
+  const scanBeam = styles.getPropertyValue('--scan-beam').trim();
+  const scanGlow = styles.getPropertyValue('--scan-glow').trim();
+
   ctx.beginPath();
-  ctx.strokeStyle = "rgba(11, 110, 138, 0.95)";
-  ctx.lineWidth = 1.8;
+  ctx.strokeStyle = traceColor;
+  ctx.lineWidth = 1.9;
   x.forEach((v, i) => {
     if (i === 0) ctx.moveTo(X(i), Y(v));
     else ctx.lineTo(X(i), Y(v));
@@ -501,9 +766,9 @@ function renderMainCanvas() {
   currentData.beats.forEach((b, idx) => {
     const isSelected = idx === selectedBeatIdx;
     let color = "#1f8f5f";
-    if (b.label === "PVC") color = "#c62f45";
-    else if (b.label.includes("BBB")) color = "#d97706";
-    else if (b.label !== "Normal") color = "#c62f45";
+    if (b.label === "PVC") color = "#ef4444";
+    else if (b.label.includes("BBB")) color = "#f59e0b";
+    else if (b.label !== "Normal") color = "#ef4444";
 
     ctx.fillStyle = color;
     ctx.beginPath();
@@ -511,10 +776,10 @@ function renderMainCanvas() {
     ctx.fill();
 
     if (isSelected) {
-      ctx.strokeStyle = "#12304a";
+      ctx.strokeStyle = isDarkTheme ? "#ffffff" : "#12304a";
       ctx.lineWidth = 2;
       ctx.stroke();
-      ctx.fillStyle = "#12304a";
+      ctx.fillStyle = isDarkTheme ? "#ffffff" : "#12304a";
       ctx.font = "bold 11px sans-serif";
       ctx.fillText(`Beat #${idx + 1}`, X(b.index) - 18, Y(x[b.index]) - 12);
     }
@@ -522,16 +787,14 @@ function renderMainCanvas() {
 
   // Telemetry Scanline Beam
   if (scanActive) {
-    // Glow tail
-    const grad = ctx.createLinearGradient(scanX - 45, 0, scanX, 0);
-    grad.addColorStop(0, "rgba(11, 110, 138, 0)");
-    grad.addColorStop(1, "rgba(11, 110, 138, 0.25)");
+    const grad = ctx.createLinearGradient(scanX - 50, 0, scanX, 0);
+    grad.addColorStop(0, "rgba(0, 0, 0, 0)");
+    grad.addColorStop(1, scanGlow);
     ctx.fillStyle = grad;
-    ctx.fillRect(Math.max(0, scanX - 45), 0, 45, h);
+    ctx.fillRect(Math.max(0, scanX - 50), 0, 50, h);
 
-    // Front scanline
     ctx.beginPath();
-    ctx.strokeStyle = "rgba(11, 110, 138, 0.9)";
+    ctx.strokeStyle = scanBeam;
     ctx.lineWidth = 2.5;
     ctx.moveTo(scanX, 0);
     ctx.lineTo(scanX, h);
@@ -595,8 +858,11 @@ function renderBeatCanvas(b) {
   }
 
   // Draw segment waveform
+  const styles = getComputedStyle(document.documentElement);
+  const traceColor = styles.getPropertyValue('--trace-color').trim();
+
   ctx.beginPath();
-  ctx.strokeStyle = "#12304a";
+  ctx.strokeStyle = traceColor;
   ctx.lineWidth = 2.2;
   seg.forEach((v, i) => {
     if (i === 0) ctx.moveTo(X(i), Y(v));
@@ -606,7 +872,7 @@ function renderBeatCanvas(b) {
 
   // Peak center marker
   const peakIdx = Math.min(350, seg.length - 1);
-  ctx.fillStyle = b.label === "Normal" ? "#1f8f5f" : "#c62f45";
+  ctx.fillStyle = b.label === "Normal" ? "#1f8f5f" : "#ef4444";
   ctx.beginPath();
   ctx.arc(X(peakIdx), Y(seg[peakIdx]), 6, 0, Math.PI * 2);
   ctx.fill();
@@ -660,7 +926,6 @@ cElem.addEventListener("click", e => {
   const clickX = e.clientX - rect.left;
   const targetSample = (clickX / rect.width) * currentData.clean.length;
 
-  // Find nearest beat
   let nearestIdx = 0;
   let minDiff = Infinity;
   currentData.beats.forEach((b, i) => {
@@ -673,9 +938,10 @@ cElem.addEventListener("click", e => {
   selectBeat(nearestIdx);
 });
 
-// Auto-run first sample on startup!
+// Auto-init
 window.addEventListener("DOMContentLoaded", () => {
-  loadPreset(100);
+  initTheme();
+  loadPreset('100');
 });
 </script>
 </body>
