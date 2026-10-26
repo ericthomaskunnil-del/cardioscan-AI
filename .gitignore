@@ -1,0 +1,30 @@
+# Virtual environments
+venv/
+venv311/
+env/
+.env
+
+# Python cache & build
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Data cache & large dataset files
+data/*.pkl
+data/cache/
+data/qtdb/
+*.pkl
+
+# Exclude bulk MIT-BIH dataset but preserve interactive demo records
+data/mitdb/*
+!data/mitdb/100.*
+!data/mitdb/101.*
+!data/mitdb/106.*
+!data/mitdb/119.*
+!data/mitdb/214.*
+
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride

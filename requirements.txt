@@ -1,0 +1,10 @@
+wfdb
+numpy
+scipy
+scikit-learn
+tensorflow
+fastapi
+uvicorn
+python-multipart
+anthropic
+ecg_gudb_database
